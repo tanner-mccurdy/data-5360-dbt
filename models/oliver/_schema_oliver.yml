@@ -18,3 +18,12 @@ models:
         description: "A foreign key to the policy dimension"
         tests:
         - not_null
+  - name: stg_employee_certifcations
+    description: |
+      Staging model for employee certifications.
+      Each record represents a certification between an employee and the date of award.
+  - name: fact_certification
+    description: |
+      Employee Certification Fact.
+      The grain of this table is certification + employee + award date.
+      Each record represents a certification awarded on a specific date to an employee.

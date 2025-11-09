@@ -11,6 +11,10 @@ models:
     description: "Oliver Product Dimension"
   - name: oliver_dim_store
     description: "Oliver Store Dimension"  
+    columns:
+      - name: store_key
+        tests:
+          - unique
   - name: fact_sales.sql
     description: "Oliver Sales Fact"
     columns:
@@ -18,12 +22,33 @@ models:
         description: "A foreign key to the policy dimension"
         tests:
         - not_null
-  - name: stg_employee_certifcations
+  - name: stg_employee_certifications
     description: |
       Staging model for employee certifications.
-      Each record represents a certification between an employee and the date of award.
+      Each record represents a certification between an employee and the date of award. 
+    columns:
+      - name: certification_name
+        tests:
+          - accepted_values:
+              values:
+              - "Product Knowledge Level 2"
+              - "Point of Sale Operations"
+              - "Conflict Resolution"
+              - "Leadership and Coaching"
+              - "Inventory Management"
+              - "Cash Handling and Security"
+              - "Strategic Retail Operations"
+              - "Customer Service Excellence"
+              - "Workplace Safety"
   - name: fact_certification
     description: |
       Employee Certification Fact.
       The grain of this table is certification + employee + award date.
       Each record represents a certification awarded on a specific date to an employee.
+    columns:
+    - name: employee_key
+      tests:
+        - relationships:
+            field: employee_key
+            to: ref('oliver_dim_employee')
+          
